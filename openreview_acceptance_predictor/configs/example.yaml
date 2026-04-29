@@ -1,0 +1,8 @@
+venues:
+  - ICLR.cc/2023/Conference
+  - ICLR.cc/2024/Conference
+test_venues:
+  - ICLR.cc/2024/Conference
+max_words: 3500
+retrieval_k: 5
+seed: 42
