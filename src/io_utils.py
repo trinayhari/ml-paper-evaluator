@@ -1,4 +1,5 @@
 import json
+import gzip
 from pathlib import Path
 from typing import Dict, Iterable, List
 
@@ -15,7 +16,8 @@ def _clean_surrogates(value):
 
 def read_jsonl(path: str) -> List[Dict]:
     rows = []
-    with open(path, 'r', encoding='utf-8') as f:
+    opener = gzip.open if str(path).endswith('.gz') else open
+    with opener(path, 'rt', encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if line:

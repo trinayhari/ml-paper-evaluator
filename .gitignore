@@ -1,5 +1,13 @@
 .venv/
 data/
+!data/
+data/*
+!data/raw/
+data/raw/*
+!data/raw/openreview_notes.jsonl.gz
+!data/processed/
+data/processed/*
+!data/processed/papers.jsonl.gz.part-*
 results/
 models/
 __pycache__/

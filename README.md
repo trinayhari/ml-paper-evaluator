@@ -36,7 +36,7 @@ export OPENREVIEW_PASSWORD="your_password"
 
 ## Default Usage
 
-If you already have `data/processed/papers.jsonl`, the default path is the Colab notebook or the single pipeline wrapper. This is the recommended way to run the project for training, retrieval, RAG, and optional LoRA without manually coordinating intermediate scripts.
+If you already have `data/processed/papers.jsonl` or `data/processed/papers.jsonl.gz`, the default path is the Colab notebook or the single pipeline wrapper. This is the recommended way to run the project for training, retrieval, RAG, and optional LoRA without manually coordinating intermediate scripts.
 
 Notebook:
 
@@ -46,7 +46,7 @@ One-command wrapper:
 
 ```bash
 bash scripts/run_colab_pipeline.sh \
-  --input /content/drive/MyDrive/openreview/papers.jsonl \
+  --input /content/ml-paper-evaluator/data/processed/papers.jsonl.gz \
   --output-root /content/drive/MyDrive/openreview/colab_pipeline_run \
   --clean-output
 ```
@@ -75,11 +75,22 @@ python scripts/02_extract_pdfs.py --input data/raw/openreview_notes.jsonl --out 
 ## Colab One-Run Notebook Flow
 
 If you already have `data/processed/papers.jsonl`, use the Colab notebook at `notebooks/openreview_colab_pipeline.ipynb`.
+This repo also includes a committed compressed dataset split into GitHub-safe parts:
+
+- `data/processed/papers.jsonl.gz.part-aa`
+- `data/processed/papers.jsonl.gz.part-ab`
+- `data/raw/openreview_notes.jsonl.gz`
+
+To restore the processed dataset archive:
+
+```bash
+python scripts/00_restore_dataset.py --out data/processed/papers.jsonl.gz
+```
 
 It is built around a single pipeline entrypoint:
 
 ```bash
-bash scripts/run_colab_pipeline.sh --input /content/drive/MyDrive/openreview/papers.jsonl
+bash scripts/run_colab_pipeline.sh --input /content/ml-paper-evaluator/data/processed/papers.jsonl.gz
 ```
 
 What it does automatically:
@@ -95,18 +106,18 @@ Useful options:
 ```bash
 # clean old outputs and run the default Colab pipeline
 bash scripts/run_colab_pipeline.sh \
-  --input /content/drive/MyDrive/openreview/papers.jsonl \
+  --input /content/ml-paper-evaluator/data/processed/papers.jsonl.gz \
   --clean-output
 
 # override the output directory and RAG sample size
 bash scripts/run_colab_pipeline.sh \
-  --input /content/drive/MyDrive/openreview/papers.jsonl \
+  --input /content/ml-paper-evaluator/data/processed/papers.jsonl.gz \
   --output-root /content/drive/MyDrive/openreview_run \
   --rag-limit 200
 
 # include LoRA fine-tuning
 bash scripts/run_colab_pipeline.sh \
-  --input /content/drive/MyDrive/openreview/papers.jsonl \
+  --input /content/ml-paper-evaluator/data/processed/papers.jsonl.gz \
   --run-lora
 ```
 

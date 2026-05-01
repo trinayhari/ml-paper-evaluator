@@ -26,6 +26,19 @@ def ensure_exists(path: Path, description: str):
         raise FileNotFoundError(f"{description} not found: {path}")
 
 
+def maybe_restore_split_archive(path: Path):
+    if path.exists():
+        return
+    parts = sorted(path.parent.glob(path.name + ".part-*"))
+    if not parts:
+        return
+    with open(path, "wb") as out_file:
+        for part in parts:
+            with open(part, "rb") as part_file:
+                out_file.write(part_file.read())
+    print(f"restored {path} from {len(parts)} parts")
+
+
 def count_rows(path: Path) -> int:
     return len(read_jsonl(str(path)))
 
@@ -52,6 +65,7 @@ def main():
     args = parser.parse_args()
 
     input_path = Path(args.input).resolve()
+    maybe_restore_split_archive(input_path)
     ensure_exists(input_path, "Processed dataset")
 
     output_root = Path(args.output_root).resolve()
