@@ -40,12 +40,14 @@ def main():
     ])
     tfidf.fit(xtr, ytr)
     results = {}
+    results.update(evaluate('tfidf_logreg_train', tfidf, xtr, ytr))
     results.update(evaluate('tfidf_logreg_dev', tfidf, xdev, ydev))
     results.update(evaluate('tfidf_logreg_test', tfidf, xte, yte))
     joblib.dump(tfidf, f'{args.out}/tfidf_logreg.joblib')
 
     embedding_result = train_embedding_logreg(xtr, ytr, xdev, ydev, xte, yte, classification_report_dict)
     model_name = 'sbert_logreg' if embedding_result['backend'] == 'sbert' else 'tfidf_embed_logreg'
+    results[f'{model_name}_train'] = embedding_result['train_metrics']
     results[f'{model_name}_dev'] = embedding_result['dev_metrics']
     results[f'{model_name}_test'] = embedding_result['test_metrics']
     joblib.dump(

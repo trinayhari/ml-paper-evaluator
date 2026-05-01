@@ -74,6 +74,7 @@ def train_embedding_logreg(xtr, ytr, xdev, ydev, xte, yte, metrics_fn):
         "backend": backend,
         "encoder": encoder,
         "clf": clf,
+        "train_metrics": metrics_fn(ytr, clf.predict_proba(ztr)[:, 1]),
         "dev_metrics": metrics_fn(ydev, clf.predict_proba(zdev)[:, 1]),
         "test_metrics": metrics_fn(yte, clf.predict_proba(zte)[:, 1]),
     }
